@@ -4,15 +4,13 @@
 
 Funktion supports hundreds of different [trigger endpoint URLs](http://camel.apache.org/components.html) including most network protocols, transports, databases, messaging systems, social networks, cloud services and SaaS offerings.
 
-In a sense funktion is a [serverless](https://www.quora.com/What-is-Serverless-Computing) approach to event driven microservices as you focus on just writing _funktions_ and Kubernetes takes care of the rest. Its not that there's no servers; its more that you as the funktion developer don't have to worry about managing them.
-
 <p align="center">
   <a href="http://fabric8.io/">
   	<img src="https://raw.githubusercontent.com/fabric8io/funktion/master/docs/images/icon.png" alt="funktion logo" width="200" height="200"/>
   </a>
 </p>
 
-
+In a sense funktion is a [serverless](https://www.quora.com/What-is-Serverless-Computing) approach to event driven microservices as you focus on just writing _funktions_ and then Funktion and Kubernetes takes care of the rest. Its not that there's no servers; its more that you as the developer don't have to worry about managing them!
 
 ## Using the CLI
 

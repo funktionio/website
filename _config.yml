@@ -1,6 +1,6 @@
-title: Funktion: open source event based lambda programming for kubernetes
-email: funktionio@googlegroups.com
-description: Funktion is an open source implementation of event based Lambda programming for Kubernetes
+title: "Funktion: open source event based lambda programming for kubernetes"
+email: "funktionio@googlegroups.com"
+description: "Funktion is an open source implementation of event based Lambda programming for Kubernetes"
 baseurl: "/" 
 url: "https://funktion.fabric8.io"
 twitter_username: funktionio

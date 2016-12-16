@@ -1,7 +1,0 @@
-title: "Funktion"
-email: "funktionio@googlegroups.com"
-description: "Funktion is an open source implementation of event based Lambda programming for Kubernetes"
-url: "https://funktion.fabric8.io"
-twitter_username: funktionio
-github_username:  funktionio
-theme: "jekyll-theme-tactile"

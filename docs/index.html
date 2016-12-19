@@ -527,10 +527,22 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#subscribing-to-events">4.5. Subscribing to events</a></li>
 </ul>
 </li>
-<li><a href="#how-it-works">5. How it works</a>
+<li><a href="#funktion-java">5. Using funktion on the JVM</a>
 <ul class="sectlevel2">
-<li><a href="#kubernetes-resources">5.1. Kubernetes Resources</a></li>
-<li><a href="#debugging">5.2. Debugging</a></li>
+<li><a href="#examples">5.1. Examples</a></li>
+<li><a href="#getting-started-with-funktion-and-the-jvm">5.2. Getting started with Funktion and the JVM</a></li>
+</ul>
+</li>
+<li><a href="#how-it-works">6. How it works</a>
+<ul class="sectlevel2">
+<li><a href="#kubernetes-resources">6.1. Kubernetes Resources</a></li>
+<li><a href="#debugging">6.2. Debugging</a></li>
+<li><a href="#terminology">6.3. Terminology</a></li>
+</ul>
+</li>
+<li><a href="#faq">7. FAQ</a>
+<ul class="sectlevel2">
+<li><a href="#general-questions">7.1. General questions</a></li>
 </ul>
 </li>
 </ul>
@@ -855,7 +867,147 @@ funktion delete runtime nodejs</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="how-it-works">5. How it works</h2>
+<h2 id="funktion-java">5. Using funktion on the JVM</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Funktion is designed so that it can bind any events to any HTTP endpoint or any function source using a scripting language like nodejs, python or ruby. But you can also embed the funktion mechanism inside a JVM process.</p>
+</div>
+<div class="paragraph">
+<p>To do that you:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>write a simple function in any programming language <a href="https://github.com/fabric8io/funktion/blob/master/funktion-runtime/src/test/java/io/fabric8/funktion/sample/Main.java#L25-L27">like this</a>.</p>
+</li>
+<li>
+<p>create a <a href="funktion-runtime/funktion.yml">funktion.yml</a> file and associate your function with an <a href="http://camel.apache.org/components.html">event trigger endpoint URL</a> such as a HTTP URL or email address to listen on, a message queue name or database table etc.</p>
+</li>
+<li>
+<p>build and deploy the Java project in the usual way, such as via <a href="http://fabric8.io/guide/cdelivery.html">Jenkins CI / CD pipeline</a> and your funktion will be deployed to your kubernetes cluster!</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="examples">5.1. Examples</h3>
+<div class="paragraph">
+<p>Check out the following example projects which use a JVM and implement the functions in different JVM based languages:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/fabric8-quickstarts/funktion-java-example">funktion-java-example</a> is an example using a Java funktion triggered by HTTP</p>
+</li>
+<li>
+<p><a href="https://github.com/fabric8-quickstarts/funktion-groovy-example">funktion-groovy-example</a> is an example using a <a href="http://www.groovy-lang.org/">Groovy</a> funktion triggered by HTTP</p>
+</li>
+<li>
+<p><a href="https://github.com/fabric8-quickstarts/funktion-kotlin-example">funktion-kotlin-example</a> is an example using a <a href="https://kotlinlang.org/">Kotlin</a> funktion triggered by HTTP</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="getting-started-with-funktion-and-the-jvm">5.2. Getting started with Funktion and the JVM</h3>
+<div class="paragraph">
+<p>You can just fork one of the above examples and use command line tools to build and deploy it to a <a href="http://kubernetes.io">Kubernetes</a> or <a href="https://www.openshift.org/">OpenShift</a> cluster.</p>
+</div>
+<div class="paragraph">
+<p>However to make it easier to create, build, test, stage, approve, release, manage and iterate on your funktion code from inside your browser we recommend you use the <a href="http://fabric8.io/">Fabric8 Microservices Platform</a> with its baked in <a href="http://fabric8.io/guide/cdelivery.html">Continuous Delivery</a> based on <a href="https://jenkins.io/solutions/pipeline/">Jenkins Pipelines</a> together with integrated <a href="http://fabric8.io/guide/console.html">Developer Console</a>, <a href="http://fabric8.io/guide/management.html">Management</a> (centralised logging, metrics, alerts), <a href="http://fabric8.io/guide/chat.html">ChatOps</a> and <a href="http://fabric8.io/guide/chaosMonkey.html">Chaos Monkey</a>.</p>
+</div>
+<div class="paragraph">
+<p>When using the <a href="http://fabric8.io/">Fabric8 Microservices Platform</a> you can create a new funktion in a few clicks from the <code>Create Application</code> button; then the platform takes care of building, testing, staging and approving your releases, rolling upgrades, management and monitoring; you just use your browser via the <a href="http://fabric8.io/guide/console.html">Developer Console</a> to create, edit or test your code while funktion, Jenkins and Kubernetes take care of building, packaging, deploying, testing and releasing your project.</p>
+</div>
+<div class="sect3">
+<h4 id="using-the-fabric8-microservices-platform">5.2.1. Using the Fabric8 Microservices Platform</h4>
+<div class="paragraph">
+<p>First you will need to install the <a href="http://fabric8.io/">fabric8 microservices platform</a> on a cluster of <a href="http://kubernetes.io">Kubernetes</a> (1.2 or later) or <a href="https://www.openshift.org/">OpenShift</a> (3.2 or later).</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>follow one of the <a href="http://fabric8.io/guide/getStarted/index.html">fabric8 getting started guides</a> to get the <a href="http://fabric8.io/">fabric8 microservices platform</a> up and running on a Kubernetes or OpenShift cluster</p>
+</li>
+<li>
+<p>open the <a href="http://fabric8.io/guide/console.html">Developer Console</a></p>
+</li>
+<li>
+<p>select your <code>Team Dashboard</code> page</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="create-and-use-your-funktion">5.2.2. Create and use your funktion</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>from inside your <code>Team Dashboard</code> page click <code>Create Application</code> button then you will be presented with a number of different kinds of microservice to create</p>
+</li>
+<li>
+<p>select the <code>Funktion</code> icon and type in the name of your microservice and hit <code>Next</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="https://raw.githubusercontent.com/fabric8io/funktion/master/docs/images/select-microservice.png" alt="select the funktion microservice and enter a name for your project"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>select the kind of funktion you wish to create (Java, Groovy, Kotlin, NodeJS etc) then hit <code>Next</code></p>
+</li>
+<li>
+<p>you will now be prompted to choose one of the default CD Pipelines to use. For your first funktion we recommend <code>CanaryReleaseAndStage</code></p>
+</li>
+<li>
+<p>selecting <code>Copy pipeline to project</code> is kinda handy if you want to edit your <code>Jenkinsfile</code> from your source code later on</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="https://raw.githubusercontent.com/fabric8io/funktion/master/docs/images/select-pipeline.png" alt="select the CD Pipeline"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>click <code>Next</code> then your app should be built and deployed. Please be patient first time you build a funktion as its going to be downloading a few docker images to do the build and runtime. You&#8217;re second build should be much faster!</p>
+</li>
+<li>
+<p>once the build is complete you should see on the <code>App Dashboard</code> page the build pipeline run, the running pods for your funktion in each environment for your CD Pipeline and a link so you can easily navigate to the environment or ReplicaSet/ReplicationController/Pods in kubernetes</p>
+</li>
+<li>
+<p>in the screenshot below you can see we&#8217;re running version <code>1.0.1</code> of the app <code>groovyfunktion</code> which currently has <code>1</code> running pod (those are all clickable links to view the ReplicationController or pods)</p>
+</li>
+<li>
+<p>for HTTP based funktions you can invoke the funktion via the open icon in the <code>Staging</code> environment (the icon to the right of the green <code>1</code> button next to <code>groovyfunction-1: 1.0.1</code>)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="https://raw.githubusercontent.com/fabric8io/funktion/master/docs/images/funktion-dashboard.png" alt="Funktion dashboard"></span></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="how-it-works">5.2.3. How it works</h4>
+<div class="paragraph">
+<p>When you implement your <strong>Funktion</strong> using a JVM based language like Java, Groovy, Kotlin or Scala then your function is packaged up into a <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> application using <a href="http://camel.apache.org/">Apache Camel</a> to implement the trigger via the various <a href="http://camel.apache.org/components.html">endpoint URLs</a>.</p>
+</div>
+<div class="paragraph">
+<p>We&#8217;ve focussed <code>funktion</code> on being some simple declarative metadata to describe triggers via URLs and a simple programming model which is the only thing funktion developers should focus on; leaving the implementation free to use different approaches for optimal resource usage.</p>
+</div>
+<div class="paragraph">
+<p>The creation of the docker images and generation of the kubernetes manifests is all done by the <a href="https://github.com/fabric8io/fabric8-maven-plugin">fabric8-maven-plugin</a> which can work with pure docker on Kubernetes or reuse OpenShift&#8217;s binary source to image builds. Usually this is hidden from you if you are using the <a href="http://fabric8.io/guide/cdelivery.html">Continuous Delivery</a> in the <a href="http://fabric8.io/">fabric8 microservices platform</a>; but if you want to play with funktion purely from the command line, you&#8217;ll need to <a href="https://java.com/en/download/help/index_installing.xml">install Java</a> and <a href="https://maven.apache.org/install.html">install Apache Maven</a>.</p>
+</div>
+<div class="paragraph">
+<p>Underneath the covers a <a href="http://kubernetes.io/docs/user-guide/deployments/">Kubernetes Deployment</a> is automatically created for your Funktion (or on OpenShift a <a href="https://docs.openshift.com/enterprise/3.0/dev_guide/deployments.html">DeploymentConfig</a> is used) which takes care of scaling your funktion and performing <a href="http://kubernetes.io/docs/user-guide/rolling-updates/">rolling updates</a> as you edit your code.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="how-it-works">6. How it works</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The <code>funktion operator</code> watches for <code>Subscription</code> and <code>Function</code> resources.</p>
@@ -870,7 +1022,7 @@ funktion delete runtime nodejs</code></pre>
 <p>The following kubernetes resources are used:</p>
 </div>
 <div class="sect2">
-<h3 id="kubernetes-resources">5.1. Kubernetes Resources</h3>
+<h3 id="kubernetes-resources">6.1. Kubernetes Resources</h3>
 <div class="paragraph">
 <p>A <code>Subscription</code> is modelled as a Kubernetes <code>ConfigMap</code> with the label <code>kind.funktion.fabric8.io: &quot;Subscription&quot;</code>. A ConfigMap is used so that the entries inside the <code>ConfigMap</code> can be mounted as files inside the <code>Deployment</code>. For example this will typically involve storing the <code>funktion.yml</code> file or maybe a Spring Boot <code>application.properties</code> file inside the <code>ConfigMap</code> like <a href="examples/subscription1.yml">this example subscription</a></p>
 </div>
@@ -894,12 +1046,114 @@ funktion delete runtime nodejs</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="debugging">5.2. Debugging</h3>
+<h3 id="debugging">6.2. Debugging</h3>
 <div class="paragraph">
 <p>If you ever need to you can debug any <code>Subscription</code> as each Subscription matches a <code>Deployment</code> of one or more pods. So you can just debug that pod which typically is a regular Spring Boot and camel application.</p>
 </div>
 <div class="paragraph">
 <p>Otherwise you can debug the pod thats exposing an HTTP endpoint using whatever the native debugger is; e.g. using Java or NodeJS or whatever.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="terminology">6.3. Terminology</h3>
+<div class="paragraph">
+<p>This section defines all the terms used in the <code>funktion</code> project</p>
+</div>
+<div class="sect3">
+<h4 id="connector">6.3.1. Connector</h4>
+<div class="paragraph">
+<p>A <code>connector</code> represents a way to connect to some event source, including most network protocols, transports, databases, messaging systems, social networks, cloud services and SaaS offerings. Funktion supports <a href="http://camel.apache.org/components.html">over 200 event sources</a>.</p>
+</div>
+<div class="paragraph">
+<p>At the implementation level a <code>connector</code> represents the kubernetes <code>deployment</code> metadata required to take the <code>flow</code> and implement it as one or more kubernetes <code>pods</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="flow">6.3.2. Flow</h4>
+<div class="paragraph">
+<p>A <code>flow</code> is a sequence of <code>steps</code> such as consuming events from an <code>endpoint</code> or invoking a <code>function</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="subscription">6.3.3. Subscription</h4>
+<div class="paragraph">
+<p>A subscription consists of one or more <code>flows</code> which bind events to HTTP endpoints and functions.</p>
+</div>
+<div class="paragraph">
+<p>For example here is a sample subscription with a single flow:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">flows</span>:
+  - <span class="string"><span class="content">steps:</span></span>
+    - <span class="string"><span class="content">kind: endpoint</span></span>
+      <span class="key">uri</span>: <span class="string"><span class="content">timer://foo?fixedRate=true&amp;period=5000</span></span>
+    - <span class="string"><span class="content">kind: endpoint</span></span>
+      <span class="key">uri</span>: <span class="string"><span class="content">http://myendpoint/</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Creating a <code>subscription</code> results in the <code>funktion operator</code> creating an associated <code>deployment</code> which implements the flows.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="function">6.3.4. Function</h4>
+<div class="paragraph">
+<p>A <code>function</code> is some source code to implement a function in some programming language like JavaScript, python or ruby.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="runtime">6.3.5. Runtime</h4>
+<div class="paragraph">
+<p>A <code>runtime</code> represents the kubernetes <code>deployment</code> metadata required to take a function source in some programming language and implement it as one or more pods.</p>
+</div>
+<div class="paragraph">
+<p>The <code>funktion operator</code> then detects a new <code>function</code> resource being created or updated and creates the associated <code>runtime</code> deployment</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="funktion-operator">6.3.6. Funktion Operator</h4>
+<div class="paragraph">
+<p>The <code>funktion operator</code> is a runnning <code>pod</code> in kubernetes which monitors for all the funktion resources like <code>function</code>, <code>runtime</code>, <code>connector</code> and <code>subscription</code> and creates, updates or deletes the associated kubernetes <code>deployments</code> and <code>services</code> so that as you create a <code>subscription</code> or <code>function</code> the associated kubenretes resources are created.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="faq">7. FAQ</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here are the frequently asked questions:</p>
+</div>
+<div class="sect2">
+<h3 id="general-questions">7.1. General questions</h3>
+<div class="sect3">
+<h4 id="what-is-the-license">7.1.1. What is the license?</h4>
+<div class="paragraph">
+<p>All of the Funktion source code is licensed under the [Apache License 2.0](<a href="https://www.apache.org/licenses/LICENSE-2.0" class="bare">https://www.apache.org/licenses/LICENSE-2.0</a>)</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="how-do-i-get-started">7.1.2. How do I get started?</h4>
+<div class="paragraph">
+<p>Please <a href="https://funktion.fabric8.io/docs/#install">Install Funktion</a> then follow the <a href="https://funktion.fabric8.io/docs/#get-started">Getting Started Guide</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="how-do-i-install-funktion">7.1.3. How do I install funktion?</h4>
+<div class="paragraph">
+<p>See the <a href="https://funktion.fabric8.io/docs/#install">Install Guide</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="what-is-serverless">7.1.4. What is serverless?</h4>
+<div class="paragraph">
+<p>The term <code>serverless</code> just means that with lambda style programming the developer just focuses on writing <code>functions</code> only - there is no need for developers to think about managing servers or even containers.</p>
+</div>
+<div class="paragraph">
+<p>Its not that there are no servers - of course there are - its just that developers don&#8217;t need to think about them at all, they are managed for you by the platform.</p>
+</div>
 </div>
 </div>
 </div>
@@ -908,7 +1162,7 @@ funktion delete runtime nodejs</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 3.1.32<br>
-Last updated 2016-12-16 17:24:32 UTC
+Last updated 2016-12-19 10:44:53 UTC
 </div>
 </div>
 </body>

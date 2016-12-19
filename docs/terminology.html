@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.3">
-<title>Getting Started</title>
+<title>Terminology</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -509,102 +509,90 @@ table.CodeRay td.code>pre{padding:0}
 .CodeRay .head .head{color:#f4f}
 </style>
 </head>
-<body id="get-started" class="article toc2 toc-left">
+<body class="article toc2 toc-left">
 <div id="header">
-<h1>Getting Started</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
-
+<ul class="sectlevel1">
+<li><a href="#terminology">Terminology</a>
+<ul class="sectlevel2">
+<li><a href="#connector">Connector</a></li>
+<li><a href="#flow">Flow</a></li>
+<li><a href="#subscription">Subscription</a></li>
+<li><a href="#function">Function</a></li>
+<li><a href="#runtime">Runtime</a></li>
+<li><a href="#funktion-operator">Funktion Operator</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 <div id="content">
+<div class="sect1">
+<h2 id="terminology">Terminology</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Type the following commands.</p>
+<p>This section defines all the terms used in the <code>funktion</code> project</p>
+</div>
+<div class="sect2">
+<h3 id="connector">Connector</h3>
+<div class="paragraph">
+<p>A <code>connector</code> represents a way to connect to some event source, including most network protocols, transports, databases, messaging systems, social networks, cloud services and SaaS offerings. Funktion supports <a href="http://camel.apache.org/components.html">over 200 event sources</a>.</p>
 </div>
 <div class="paragraph">
-<p>To make it easier to see what kubernetes resources are being created you may wish to create a new namespace for this experiment first:</p>
+<p>At the implementation level a <code>connector</code> represents the kubernetes <code>deployment</code> metadata required to take the <code>flow</code> and implement it as one or more kubernetes <code>pods</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="flow">Flow</h3>
+<div class="paragraph">
+<p>A <code>flow</code> is a sequence of <code>steps</code> such as consuming events from an <code>endpoint</code> or invoking a <code>function</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="subscription">Subscription</h3>
+<div class="paragraph">
+<p>A subscription consists of one or more <code>flows</code> which bind events to HTTP endpoints and functions.</p>
+</div>
+<div class="paragraph">
+<p>For example here is a sample subscription with a single flow:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>kubectl create namespace funky
-kubectl config set-context `kubectl config current-context` --namespace=funky</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">flows</span>:
+  - <span class="string"><span class="content">steps:</span></span>
+    - <span class="string"><span class="content">kind: endpoint</span></span>
+      <span class="key">uri</span>: <span class="string"><span class="content">timer://foo?fixedRate=true&amp;period=5000</span></span>
+    - <span class="string"><span class="content">kind: endpoint</span></span>
+      <span class="key">uri</span>: <span class="string"><span class="content">http://myendpoint/</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Now we&#8217;ll install the runtimes and a couple of connectors</p>
+<p>Creating a <code>subscription</code> results in the <code>funktion operator</code> creating an associated <code>deployment</code> which implements the flows.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>funktion install timer twitter</code></pre>
 </div>
+<div class="sect2">
+<h3 id="function">Function</h3>
+<div class="paragraph">
+<p>A <code>function</code> is some source code to implement a function in some programming language like JavaScript, python or ruby.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="runtime">Runtime</h3>
+<div class="paragraph">
+<p>A <code>runtime</code> represents the kubernetes <code>deployment</code> metadata required to take a function source in some programming language and implement it as one or more pods.</p>
 </div>
 <div class="paragraph">
-<p>Now lets run the <code>funktion operator</code> to watch for funktion resources and create the necessary kubernetes <code>Deployment</code> and <code>Services</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>funktion operate</code></pre>
+<p>The <code>funktion operator</code> then detects a new <code>function</code> resource being created or updated and creates the associated <code>runtime</code> deployment</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="funktion-operator">Funktion Operator</h3>
 <div class="paragraph">
-<p>Open another terminal then type:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>kubectl apply -f https://raw.githubusercontent.com/fabric8io/funktion-operator/master/examples/subscription1.yml</code></pre>
+<p>The <code>funktion operator</code> is a runnning <code>pod</code> in kubernetes which monitors for all the funktion resources like <code>function</code>, <code>runtime</code>, <code>connector</code> and <code>subscription</code> and creates, updates or deletes the associated kubernetes <code>deployments</code> and <code>services</code> so that as you create a <code>subscription</code> or <code>function</code> the associated kubenretes resources are created.</p>
 </div>
 </div>
-<div class="paragraph">
-<p>You should now have created a subscription flow. You can view the subscription via</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>funktion get subscription</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To view the output of the subscription you can use the following (assuming you&#8217;ve <a href="https://blog.fabric8.io/enable-bash-completion-for-kubernetes-with-kubectl-506bc89fe79e#.9oky2fe2e">enabled tab completion for kubectl</a></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>kubectl logs -f subscription1-[TAB]</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If you don&#8217;t have tab completion you can specify the exact pod name, or you can use this command to find it and use it:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>kubectl logs -f `kubectl get pod -oname -lfunktion.fabric8.io/kind=Subscription`</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To delete the subscription:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>funktion delete subscription subscription1</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now lets create a function:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>kubectl apply -f https://raw.githubusercontent.com/fabric8io/funktion-operator/master/examples/function1.yml</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If you are running the <a href="http://fabric8.io/guide/console.html">fabric8 console</a> then you will have the link:[exposecontroller] microservice running and will be able to invoke it via running one of these commands:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>minikube service function1 -n funky
-gofabric8 service function1 -n funky</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Or clicking on the <code>funktion1</code> service in the <a href="http://fabric8.io/guide/console.html">fabric8 console</a> in the <code>Services</code> tab for the <code>funky</code> namespace.</p>
 </div>
 </div>
 <div id="footer">

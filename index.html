@@ -98,7 +98,7 @@
                     <code>
 <span><var>$</var> funktion install timer</span>
 <span><var>$</var> funktion create function -n myfunk -s 'module.exports = function(context, callback) { callback(200, "Hello, world!\n"); }'
-<span><var>$</var> funktion subscribe --from timer://bar?period=5000 --to http://myfunk/</span>
+<span><var>$</var> funktion subscribe timer://bar?period=5000 http://myfunk/</span>
                     </code>
                 </pre>
             </div>

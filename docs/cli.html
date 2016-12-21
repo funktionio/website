@@ -518,6 +518,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#browsing-resources">Browsing resources</a></li>
 <li><a href="#deleting-resources">Deleting resources</a></li>
 <li><a href="#installing-runtimes-and-connectors">Installing Runtimes and Connectors</a></li>
+<li><a href="#configuring-connectors">Configuring Connectors</a></li>
 <li><a href="#running-the-operator">Running the Operator</a></li>
 <li><a href="#subscribing-to-events">Subscribing to events</a></li>
 </ul>
@@ -598,7 +599,7 @@ funktion delete runtime nodejs</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion install amqp kafka timer</code></pre>
+<pre class="CodeRay highlight"><code>funktion install amqp kafka timer twitter</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -615,6 +616,39 @@ funktion delete runtime nodejs</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>funktion install -l</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-connectors">Configuring Connectors</h3>
+<div class="paragraph">
+<p>Various connectors have different configuration properties. For example the <code>twitter</code> connector has a number of properties to configure like the secret and token.</p>
+</div>
+<div class="paragraph">
+<p>So to configure a connector you can type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion edit connector twitter</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will then be prompted to enter new values; you can just hit <code>[ENTER]</code> to avoid changing a property.</p>
+</div>
+<div class="paragraph">
+<p>To see a list of all the properties you can type</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion edit connector twitter -l</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then you can pass in specific properties directly via the non-interactive version of the edit command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion edit connector twitter accessToken=mytoken accessTokenSecret=mysecret consumerKey=myconsumerkey consumerSecret=myconsumerSecert</code></pre>
 </div>
 </div>
 </div>
@@ -709,7 +743,7 @@ funktion delete runtime nodejs</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-19 10:44:53 UTC
+Last updated 2016-12-21 06:43:33 UTC
 </div>
 </div>
 </body>

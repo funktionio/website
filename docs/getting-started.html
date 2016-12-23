@@ -514,10 +514,14 @@ table.CodeRay td.code>pre{padding:0}
 <h1>Getting Started</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
-
+<ul class="sectlevel1">
+<li><a href="#a-more-complex-example">A more complex example</a></li>
+</ul>
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
 <p>Type the following commands.</p>
 </div>
@@ -535,7 +539,7 @@ kubectl config set-context `kubectl config current-context` --namespace=funky</c
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion install timer twitter</code></pre>
+<pre class="CodeRay highlight"><code>funktion install http4 timer twitter</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -607,9 +611,19 @@ gofabric8 service function1 -n funky</code></pre>
 <p>Or clicking on the <code>funktion1</code> service in the <a href="http://fabric8.io/guide/console.html">fabric8 console</a> in the <code>Services</code> tab for the <code>funky</code> namespace.</p>
 </div>
 </div>
+</div>
+<div class="sect1">
+<h2 id="a-more-complex-example">A more complex example</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To see a more real world style example check out the <a href="https://github.com/fabric8io/funktion-operator/tree/master/examples/blog-example">log splitting and counting example</a></p>
+</div>
+</div>
+</div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-21 10:40:41 UTC
+Last updated 2016-12-23 16:28:45 UTC
 </div>
 </div>
 </body>

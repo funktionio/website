@@ -94,12 +94,70 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>lets install the platform, runtimes and a connector</p>
+                </div>
+            </div>
+            <div class="row">
                 <pre>
                     <code>
-<span><var>$</var> funktion install timer</span>
-<span><var>$</var> funktion create function -n myfunk -s 'module.exports = function(context, callback) { callback(200, "Hello, world!\n"); }'
-<span><var>$</var> funktion subscribe timer://bar?period=5000 http://myfunk/</span>
+<span><var>$</var> funktion install platform</span>
+<span><var>$</var> funktion install runtime</span>
+<span><var>$</var> funktion install connector timer</span>
                     </code>
+                </pre>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>now lets create a function and bind it to a flow of events</p>
+                </div>
+            </div>
+            <div class="row">
+                <pre>
+                    <code>
+<span><var>$</var> funktion create fn -n myfunk -s 'module.exports = function(context, callback) { callback(200, "Hello, world!\n"); }'
+<span><var>$</var> funktion create flow timer://bar?period=5000 http://myfunk/</span>
+                    </code>
+                </pre>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>if we have some source javascript files like <a href="https://github.com/funktionio/funktion/blob/master/examples/hello.js">this example</a> in a local folder <i>foo</i> we can watch those and then edit them in our editor:</p>
+                </div>
+            </div>
+            <div class="row">
+                <pre>
+                    <code>
+<span><var>$</var> funktion create fn -f foo
+                    </code>
+                </pre>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>view the logs of the function via:</p>
+                </div>
+            </div>
+            <div class="row">
+                <pre>
+                    <code>
+<span><var>$</var> funktion logs hello
+                    </code>
+                </pre>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>or to debug the JavaScript type:</p>
+                </div>
+            </div>
+            <div class="row">
+                <pre>
+                    <code>
+<span><var>$</var> funktion debug fn hello -c
+
+Forwarding from 127.0.0.1:5858 -> 5858
+Forwarding from [::1]:5858 -> 5858
+
+To Debug open: chrome-devtools://devtools/bundled/inspector.html?experiments=true&amp;v8only=true&amp;ws=127.0.0.1:5858/5d8d25e3-855f-409e-9761-5acd220a7d89                    </code>
                 </pre>
             </div>
              <div class="row">

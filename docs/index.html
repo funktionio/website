@@ -516,10 +516,17 @@ table.CodeRay td.code>pre{padding:0}
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#introduction">1. Introduction</a></li>
-<li><a href="#install">2. Installing Funktion</a></li>
+<li><a href="#install">2. Installing Funktion</a>
+<ul class="sectlevel2">
+<li><a href="#install-platform">2.1. Installing the Funktion Platform</a></li>
+<li><a href="#setup-namespace">2.2. Setting up your namespace</a></li>
+</ul>
+</li>
 <li><a href="#get-started">3. Getting Started</a>
 <ul class="sectlevel2">
-<li><a href="#a-more-complex-example">3.1. A more complex example</a></li>
+<li><a href="#create-a-function">3.1. Create a function</a></li>
+<li><a href="#create-a-flow">3.2. Create a flow</a></li>
+<li><a href="#a-more-complex-example">3.3. A more complex example</a></li>
 </ul>
 </li>
 <li><a href="#cli">4. Using the CLI</a>
@@ -528,8 +535,9 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#deleting-resources">4.2. Deleting resources</a></li>
 <li><a href="#installing-runtimes-and-connectors">4.3. Installing Runtimes and Connectors</a></li>
 <li><a href="#configuring-connectors">4.4. Configuring Connectors</a></li>
-<li><a href="#running-the-operator">4.5. Running the Operator</a></li>
-<li><a href="#subscribing-to-events">4.6. Subscribing to events</a></li>
+<li><a href="#creating-flows">4.5. Creating flows</a></li>
+<li><a href="#using-kubectl-directly">4.6. Using kubectl directly</a></li>
+<li><a href="#running-the-operator">4.7. Running the Operator</a></li>
 </ul>
 </li>
 <li><a href="#funktion-java">5. Using funktion on the JVM</a>
@@ -591,7 +599,114 @@ table.CodeRay td.code>pre{padding:0}
 <p>If you are on your laptop a quick way to get a kubernetes cluster is by <a href="https://github.com/kubernetes/minikube#installation">installing and starting minikube</a> and then <a href="http://kubernetes.io/docs/user-guide/prereqs/">installing kubectl</a> and putting it on your <code>PATH</code> environment variable.</p>
 </div>
 <div class="paragraph">
-<p>You will also need to <a href="https://github.com/fabric8io/funktion-operator/releases">download the funktion binary for your platform</a> and add it to your <code>PATH</code> environment variable</p>
+<p>You will also need to <a href="https://github.com/funktionio/funktion/releases">download the funktion binary for your platform</a> and add it to your <code>PATH</code> environment variable</p>
+</div>
+<div class="paragraph">
+<p>To test your kubernetes cluster type the following commands which should succeed without error:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>kubectl get node
+kubectl get pod</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="install-platform">2.1. Installing the Funktion Platform</h3>
+<div class="paragraph">
+<p>There are a number of microservices required to run funktion:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>funktion operator: manages Deployments for functions and flows</p>
+</li>
+<li>
+<p><a href="https://github.com/fabric8io/exposecontroller/">exposecontroller</a>: exposes <code>Services</code> (functions or flows) over node ports, ingress, public cloud load balancers or openshift routes</p>
+</li>
+<li>
+<p><a href="https://github.com/fabric8io/configmapcontroller/">configmapcontroller</a>: performs rolling updates of a <code>Deployment</code> when its associated <code>ConfigMap</code> changes</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To install these microservices type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion install platform</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will then get 3 <code>Deployment</code> resources created in the <code>funktion-system</code> namespace. You can view the pods created via:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>kubectl get pod -n funktion-system</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can change the namespace they are installed into via the <code>--namespace</code> argument:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>kubectl create namespace cheese
+funktion install platform --namespace cheese</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="using-funktion-with-the-fabric8-developer-platform">2.1.1. Using Funktion with the Fabric8 Developer Platform</h4>
+<div class="paragraph">
+<p>If you are using the <a href="https://fabric8.io/">fabric8 developer platform</a> then the <a href="https://github.com/fabric8io/exposecontroller/">exposecontroller</a> and  <a href="https://github.com/fabric8io/configmapcontroller/">configmapcontroller</a> microservices will already be installed. So you don&#8217;t need to install them again.</p>
+</div>
+<div class="paragraph">
+<p>So to install the funktion operator just type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion install operator</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The funktion operator <code>Deployment</code> will created in the <code>funktion-system</code> namespace. You can change the namespace they are installed into via the <code>--namespace</code> argument.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="setup-namespace">2.2. Setting up your namespace</h3>
+<div class="paragraph">
+<p>Once you have the platform installed you need to install the runtimes and connectors in the namespace you are going to use funktion.</p>
+</div>
+<div class="paragraph">
+<p>For example to install the default runtimes and some connectors type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion install runtime
+funktion install connector timer twitter</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That will install the default runtimes (e.g. nodejs) along with the <code>timer</code> and <code>twitter</code> connectors so that you can use them inside flows.</p>
+</div>
+<div class="paragraph">
+<p>To see a list of all the connectors available type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion install connector --list</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To install all the connectors type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion install connector --all</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that installing a connector just creates a kubernetes <code>ConfigMap</code> resource; no containers are created until you use the connector in a flow.</p>
+</div>
 </div>
 </div>
 </div>
@@ -599,10 +714,7 @@ table.CodeRay td.code>pre{padding:0}
 <h2 id="get-started">3. Getting Started</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Type the following commands.</p>
-</div>
-<div class="paragraph">
-<p>To make it easier to see what kubernetes resources are being created you may wish to create a new namespace for this experiment first:</p>
+<p>To make it easier to see what kubernetes resources are being created as you create functions and flows lets use a separate namespace called <code>funky</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -611,85 +723,107 @@ kubectl config set-context `kubectl config current-context` --namespace=funky</c
 </div>
 </div>
 <div class="paragraph">
-<p>Now we&#8217;ll install the runtimes and a couple of connectors</p>
+<p>Now we&#8217;ll install the runtimes and a couple of connectors into the <code>funky</code> namespace</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion install http4 timer twitter</code></pre>
+<pre class="CodeRay highlight"><code>funktion install runtime
+funktion install connector http4 timer twitter</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>Now lets run the <code>funktion operator</code> to watch for funktion resources and create the necessary kubernetes <code>Deployment</code> and <code>Services</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>funktion operate</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Open another terminal then type:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>kubectl apply -f https://raw.githubusercontent.com/fabric8io/funktion-operator/master/examples/subscription1.yml</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You should now have created a subscription flow. You can view the subscription via</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>funktion get subscription</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To view the output of the subscription you can use the following (assuming you&#8217;ve <a href="https://blog.fabric8.io/enable-bash-completion-for-kubernetes-with-kubectl-506bc89fe79e#.9oky2fe2e">enabled tab completion for kubectl</a></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>kubectl logs -f subscription1-[TAB]</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If you don&#8217;t have tab completion you can specify the exact pod name, or you can use this command to find it and use it:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>kubectl logs -f `kubectl get pod -oname -lfunktion.fabric8.io/kind=Subscription`</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To delete the subscription:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>funktion delete subscription subscription1</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now lets create a function:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>kubectl apply -f https://raw.githubusercontent.com/fabric8io/funktion-operator/master/examples/function1.yml</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If you are running the <a href="http://fabric8.io/guide/console.html">fabric8 console</a> then you will have the link:[exposecontroller] microservice running and will be able to invoke it via running one of these commands:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>minikube service function1 -n funky
-gofabric8 service function1 -n funky</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Or clicking on the <code>funktion1</code> service in the <a href="http://fabric8.io/guide/console.html">fabric8 console</a> in the <code>Services</code> tab for the <code>funky</code> namespace.</p>
 </div>
 <div class="sect2">
-<h3 id="a-more-complex-example">3.1. A more complex example</h3>
+<h3 id="create-a-function">3.1. Create a function</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion create fn -f example/hello.js</code></pre>
+</div>
+</div>
 <div class="paragraph">
-<p>To see a more real world style example check out the <a href="https://github.com/fabric8io/funktion-operator/tree/master/examples/blog-example">blog splitting and counting example using functions and flows</a></p>
+<p>This should have created a new <code>function</code>. You can view it via</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion get fn</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you wish to keep editing the source code of the function in your IDE and have funktion automatically update the running function use the <code>-w</code> argument to watch the source file(s):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion create fn -f example/hello.js -w</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To be able to find the URL of the function type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion url fn hello</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>which will output the URL to access your function. Or to open it in a browser:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion url fn hello -o</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="create-a-flow">3.2. Create a flow</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion create flow timer://bar?period=5000 http://hello/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should now have created a flow. You can view the flow via:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion get flow</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To view the output of the flow you can use the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion logs flow timer-bar1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should eventually see the output of the timer events triggering your <code>hello</code> function.</p>
+</div>
+<div class="paragraph">
+<p>To delete the flow:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion delete flow timer-bar1</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="use-an-existing-http-endpoint">3.2.1. Use an existing HTTP endpoint</h4>
+<div class="paragraph">
+<p>Flows can work with any endpoints whether they are defined via a <code>function</code> or not.</p>
+</div>
+<div class="paragraph">
+<p>e.g. this flow will use an existing endpoint on the internet</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion create flow timer://bar?period=5000 http://ip.jsontest.com/</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="a-more-complex-example">3.3. A more complex example</h3>
+<div class="paragraph">
+<p>To see a more real world style example check out the <a href="https://github.com/funktionio/funktion/tree/master/examples/blog-example">blog splitting and counting example using functions and flows</a></p>
 </div>
 </div>
 </div>
@@ -713,42 +847,32 @@ gofabric8 service function1 -n funky</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>funktion get connector
-funktion get subscription
-funktion get function
+funktion get flow
+funktion get fn
 funktion get runtime</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>or to save typing you can use:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>funktion get c
-funktion get s
-funktion get f
-funktion get r</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="deleting-resources">4.2. Deleting resources</h4>
 <div class="paragraph">
-<p>You can delete a Connector or Subscription via:</p>
+<p>You can delete a Connector or flow via:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>funktion delete connector foo
-funktion delete subscription bar
-funktion delete function whatnot
+funktion delete flow bar
+funktion delete fn whatnot
 funktion delete runtime nodejs</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Or to remove all the Subscriptions or Connectors use <code>--all</code></p>
+<p>Or to remove all the functions, flows or connectors use <code>--all</code></p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion delete subscription --all</code></pre>
+<pre class="CodeRay highlight"><code>funktion delete flow --all
+funktion delete connector --all</code></pre>
 </div>
 </div>
 </div>
@@ -759,7 +883,8 @@ funktion delete runtime nodejs</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion install --all-connectors</code></pre>
+<pre class="CodeRay highlight"><code>funktion install runtime
+funktion install connector --all</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -775,7 +900,7 @@ funktion delete runtime nodejs</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion install --list-connectors</code></pre>
+<pre class="CodeRay highlight"><code>funktion install connector --list</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -783,7 +908,7 @@ funktion delete runtime nodejs</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion install -l</code></pre>
+<pre class="CodeRay highlight"><code>funktion install conn -l</code></pre>
 </div>
 </div>
 </div>
@@ -821,77 +946,42 @@ funktion delete runtime nodejs</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="running-the-operator">4.5. Running the Operator</h4>
+<h4 id="creating-flows">4.5. Creating flows</h4>
 <div class="paragraph">
-<p>You can run the funktion operator from the command line if you prefer:</p>
+<p>To create a new flow for a connector try the following:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion operate</code></pre>
+<pre class="CodeRay highlight"><code>funktion create flow timer://bar?period=5000 http://foo/</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Though ideally we&#8217;d run the <code>funktion application</code> inside kubernetes; via a helm chart, <code>kubectl apply</code> or the <code>Run&#8230;&#8203;</code> button in the <a href="http://fabric8.io/guide/console.html">fabric8 developer console</a></p>
+<p>This will generate a new <code>flow</code> which will result in a new <code>Deployment</code> being created and one or more Pods should spin up.</p>
+</div>
+<div class="paragraph">
+<p>Note that the first time you try out a new Connector kind it may take a few moments to download the docker image for this connector - particularly the first time you use a connector.</p>
+</div>
+<div class="paragraph">
+<p>Once a pod has started for the <code>Deployment</code> you can then view the logs of a flow via</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion logs flow timer-bar1</code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="subscribing-to-events">4.6. Subscribing to events</h4>
+<h4 id="using-kubectl-directly">4.6. Using kubectl directly</h4>
 <div class="paragraph">
-<p>To create a new subscription for a connector try the following:</p>
+<p>You can also create a flow using <code>kubectl</code> directly if you prefer:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion subscribe timer://bar?period=5000 http://foo/</code></pre>
+<pre class="CodeRay highlight"><code>kubectl apply -f https://github.com/funktionio/funktion/blob/master/examples/flow1.yml</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This will generate a new <code>Subscription</code> which will result in a new <code>Deployment</code> being created and one or more Pods should spin up.</p>
-</div>
-<div class="paragraph">
-<p>Note that you must be running the <code>Operator</code> as described in the section above; its the <code>Operator</code> which actually creates a <code>Deployment</code> for each <code>Subscription</code>.</p>
-</div>
-<div class="paragraph">
-<p>Also note that the first time you try out a new Connector kind it may take a few moments to download the docker image for this connector - particularly the first time you use a connector.</p>
-</div>
-<div class="paragraph">
-<p>Once a pod has started for the <code>Deployment</code> you can then view the logs of a subscription via <code>kubectl</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>kubectl logs -f nameOfSubscription[TAB]</code></pre>
-</div>
-</div>
-<div class="sect4">
-<h5 id="scaling-a-subscription">Scaling a Subscription</h5>
-<div class="paragraph">
-<p>If you want to stop a subscription type:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>kubectl scale --replicas=0 deployment nameOfSubscription</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To start it again:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>kubectl scale --replicas=1 deployment nameOfSubscription</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="using-kubectl-directly">Using kubectl directly</h5>
-<div class="paragraph">
-<p>You can also create a Subscription using <code>kubectl</code> if you prefer:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>kubectl apply -f https://github.com/fabric8io/funktion-operator/blob/master/examples/subscription1.yml</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can view all the Connectors and Subscriptions via:</p>
+<p>You can view all the Connectors and flows via:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -903,9 +993,22 @@ funktion delete runtime nodejs</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>kubectl delete cm nameOfConnectorOrSubscription</code></pre>
+<pre class="CodeRay highlight"><code>kubectl delete cm nameOfConnectorOrflow</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="running-the-operator">4.7. Running the Operator</h4>
+<div class="paragraph">
+<p>You can run the funktion operator from the command line if you prefer:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion operate</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Though ideally you&#8217;d install the funktion operator by <a href="#install-platform">Installing the Funktion Platform</a></p>
 </div>
 </div>
 </div>
@@ -1054,13 +1157,13 @@ funktion delete runtime nodejs</code></pre>
 <h2 id="how-it-works">6. How it works</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <code>funktion operator</code> watches for <code>Subscription</code> and <code>Function</code> resources.</p>
+<p>The <code>funktion operator</code> watches for <code>Flow</code> and <code>Function</code> resources.</p>
 </div>
 <div class="paragraph">
-<p>When a new <code>Subscription</code> is created then this operator will spin up a matching <code>Deployment</code> which consumes from some <code>Connector</code> and typically invokes a function using HTTP.</p>
+<p>When a new <code>function</code> is created then the operator will spin up a matching <code>Deployment</code> for running the <code>function source code</code> along with a <code>Service</code> to expose the service as a HTTP or HTTPS endpoint.</p>
 </div>
 <div class="paragraph">
-<p>When a new is created then this operator will spin up a matching <code>Deployment</code> for running the <code>function source code</code> along with a <code>Service</code> to expose the service as a HTTP or HTTPS endpoint.</p>
+<p>When a new <code>flow</code> is created then this operator will spin up a matching <code>Deployment</code> which consumes from some <code>Connector</code> and typically invokes a function using HTTP.</p>
 </div>
 <div class="paragraph">
 <p>The following kubernetes resources are used:</p>
@@ -1068,16 +1171,19 @@ funktion delete runtime nodejs</code></pre>
 <div class="sect2">
 <h3 id="kubernetes-resources">6.1. Kubernetes Resources</h3>
 <div class="paragraph">
-<p>A <code>Subscription</code> is modelled as a Kubernetes <code>ConfigMap</code> with the label <code>kind.funktion.fabric8.io: &quot;Subscription&quot;</code>. A ConfigMap is used so that the entries inside the <code>ConfigMap</code> can be mounted as files inside the <code>Deployment</code>. For example this will typically involve storing the <code>funktion.yml</code> file or maybe a Spring Boot <code>application.properties</code> file inside the <code>ConfigMap</code> like <a href="examples/subscription1.yml">this example subscription</a></p>
+<p>A <code>function</code> is modelled as a Kubernetes <code>ConfigMap</code> with the label <code>kind.funktion.fabric8.io: &quot;Function&quot;</code> which contains the source code of the function inside the <code>Data['source']'</code> entry.</p>
+</div>
+<div class="paragraph">
+<p>A <code>flow</code> is modelled as a Kubernetes <code>ConfigMap</code> with the label <code>kind.funktion.fabric8.io: &quot;Flow&quot;</code>. A ConfigMap is used so that the entries inside the <code>ConfigMap</code> can be mounted as files inside the <code>Deployment</code>. For example this will typically involve storing the <code>funktion.yml</code> file or maybe a Spring Boot <code>application.properties</code> file inside the <code>ConfigMap</code> like <a href="examples/flow1.yml">this example flow</a></p>
 </div>
 <div class="paragraph">
 <p>A <code>Connector</code> is generated <a href="https://github.com/fabric8io/funktion/blob/master/connectors/">for every Camel Component</a> and each connector has an associated <code>ConfigMap</code> resource like <a href="https://github.com/fabric8io/funktion/blob/master/connectors/connector-timer/src/main/fabric8/timer-cm.yml">this example</a> which uses the label <code>kind.funktion.fabric8.io: &quot;Connector&quot;</code>. The <code>Connector</code> stores the <code>Deployment</code> metadata, the <code>schema.yml</code> for editing the connectors endpoint URL and the <code>documentation.adoc</code> documentation for using the Connector.</p>
 </div>
 <div class="paragraph">
-<p>So a <code>Connector</code> can have <code>0..N Subscriptions</code> associated with it. For those who know <a href="http://camel.apache.org/">Apache Camel</a> this is like the relationship between a <code>Component</code> having <code>0..N Endpoints</code>.</p>
+<p>So a <code>Connector</code> can have <code>0..N flows</code> associated with it. For those who know <a href="http://camel.apache.org/">Apache Camel</a> this is like the relationship between a <code>Component</code> having <code>0..N Endpoints</code>.</p>
 </div>
 <div class="paragraph">
-<p>For example we could have a Connector called <code>kafka</code> which knows how to produce and consume messages on <a href="http://camel.apache.org/kafka.html">Apache Kafka</a> with the Connector containing the metadata of how to create a consumer, how to configure the kafka endpoint and the documetnation. Then a Subscription could be created for <code>kafka://cheese</code> to subscribe on the <code>cheese</code> topic and post messages to <code><a href="http://foo/" class="bare">http://foo/</a></code>.</p>
+<p>For example we could have a Connector called <code>kafka</code> which knows how to produce and consume messages on <a href="http://camel.apache.org/kafka.html">Apache Kafka</a> with the Connector containing the metadata of how to create a consumer, how to configure the kafka endpoint and the documetnation. Then a flow could be created for <code>kafka://cheese</code> to subscribe on the <code>cheese</code> topic and post messages to <code><a href="http://foo/" class="bare">http://foo/</a></code>.</p>
 </div>
 <div class="paragraph">
 <p>Typically a number of <code>Connector</code> resources are shipped as a package; such as inside the <a href="https://github.com/redhat-ipaas">Red Hat iPaaS</a> or as an app inside fabric8. Though a <code>Connector</code> can be created as part of the CD Pipeline by an expert Java developer who takes a Camel component and customizes it for use by <code>Funktion</code> or the <code>iPaaS</code>.</p>
@@ -1086,13 +1192,13 @@ funktion delete runtime nodejs</code></pre>
 <p>The collection of <code>Connector</code> resources installed in a kubernetes namespace creates the <code>integration palette</code> thats seen by users in tools like CLI or web UIs.</p>
 </div>
 <div class="paragraph">
-<p>Then a <code>Subscription</code> can be created at any time by users from a <code>Connector</code> with a custom configuration (e.g. choosing a particular queue or topic in a messaging system or a particular table in a database or folder in a file system).</p>
+<p>Then a <code>flow</code> can be created at any time by users from a <code>Connector</code> with a custom configuration (e.g. choosing a particular queue or topic in a messaging system or a particular table in a database or folder in a file system).</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="debugging">6.2. Debugging</h3>
 <div class="paragraph">
-<p>If you ever need to you can debug any <code>Subscription</code> as each Subscription matches a <code>Deployment</code> of one or more pods. So you can just debug that pod which typically is a regular Spring Boot and camel application.</p>
+<p>If you ever need to you can debug any <code>flow</code> as each flow matches a <code>Deployment</code> of one or more pods. So you can just debug that pod which typically is a regular Spring Boot and camel application.</p>
 </div>
 <div class="paragraph">
 <p>Otherwise you can debug the pod thats exposing an HTTP endpoint using whatever the native debugger is; e.g. using Java or NodeJS or whatever.</p>
@@ -1104,27 +1210,36 @@ funktion delete runtime nodejs</code></pre>
 <p>This section defines all the terms used in the <code>funktion</code> project</p>
 </div>
 <div class="sect3">
-<h4 id="connector">6.3.1. Connector</h4>
+<h4 id="function">6.3.1. Function</h4>
+<div class="paragraph">
+<p>A <code>function</code> is some source code to implement a function in some programming language like JavaScript, python or ruby.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="runtime">6.3.2. Runtime</h4>
+<div class="paragraph">
+<p>A <code>runtime</code> represents the kubernetes <code>Deployment</code> metadata required to take a function source in some programming language and implement it as one or more pods.</p>
+</div>
+<div class="paragraph">
+<p>The <code>funktion operator</code> then detects a new <code>function</code> resource being created or updated and creates the associated <code>runtime</code> deployment</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="connector">6.3.3. Connector</h4>
 <div class="paragraph">
 <p>A <code>connector</code> represents a way to connect to some event source, including most network protocols, transports, databases, messaging systems, social networks, cloud services and SaaS offerings. Funktion supports <a href="http://camel.apache.org/components.html">over 200 event sources</a>.</p>
 </div>
 <div class="paragraph">
-<p>At the implementation level a <code>connector</code> represents the kubernetes <code>deployment</code> metadata required to take the <code>flow</code> and implement it as one or more kubernetes <code>pods</code>.</p>
+<p>At the implementation level a <code>Connector</code> represents the kubernetes <code>Deployment</code> metadata required to take the <code>Flow</code> and implement it as one or more kubernetes <code>pods</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="flow">6.3.2. Flow</h4>
+<h4 id="flow">6.3.4. Flow</h4>
 <div class="paragraph">
 <p>A <code>flow</code> is a sequence of <code>steps</code> such as consuming events from an <code>endpoint</code> or invoking a <code>function</code>.</p>
 </div>
-</div>
-<div class="sect3">
-<h4 id="subscription">6.3.3. Subscription</h4>
 <div class="paragraph">
-<p>A subscription consists of one or more <code>flows</code> which bind events to HTTP endpoints and functions.</p>
-</div>
-<div class="paragraph">
-<p>For example here is a sample subscription with a single flow:</p>
+<p>For example here is a sample flow in YAML format.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1137,28 +1252,16 @@ funktion delete runtime nodejs</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Creating a <code>subscription</code> results in the <code>funktion operator</code> creating an associated <code>deployment</code> which implements the flows.</p>
+<p>Note that a Flow resource can contain multiple sequential flows. Each flow object in the YAML is a sequence of steps.</p>
+</div>
+<div class="paragraph">
+<p>Creating a <code>flow</code> results in the <code>funktion operator</code> creating an associated <code>Deployment</code> which implements the flows.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="function">6.3.4. Function</h4>
+<h4 id="funktion-operator">6.3.5. Funktion Operator</h4>
 <div class="paragraph">
-<p>A <code>function</code> is some source code to implement a function in some programming language like JavaScript, python or ruby.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="runtime">6.3.5. Runtime</h4>
-<div class="paragraph">
-<p>A <code>runtime</code> represents the kubernetes <code>deployment</code> metadata required to take a function source in some programming language and implement it as one or more pods.</p>
-</div>
-<div class="paragraph">
-<p>The <code>funktion operator</code> then detects a new <code>function</code> resource being created or updated and creates the associated <code>runtime</code> deployment</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="funktion-operator">6.3.6. Funktion Operator</h4>
-<div class="paragraph">
-<p>The <code>funktion operator</code> is a runnning <code>pod</code> in kubernetes which monitors for all the funktion resources like <code>function</code>, <code>runtime</code>, <code>connector</code> and <code>subscription</code> and creates, updates or deletes the associated kubernetes <code>deployments</code> and <code>services</code> so that as you create a <code>subscription</code> or <code>function</code> the associated kubenretes resources are created.</p>
+<p>The <code>funktion operator</code> is a runnning <code>pod</code> in kubernetes which monitors for all the funktion resources like <code>function</code>, <code>runtime</code>, <code>connector</code> and <code>flow</code> and creates, updates or deletes the associated kubernetes <code>deployments</code> and <code>services</code> so that as you create a <code>flow</code> or <code>function</code> the associated kubenretes resources are created.</p>
 </div>
 </div>
 </div>
@@ -1206,7 +1309,7 @@ funktion delete runtime nodejs</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 3.1.32<br>
-Last updated 2016-12-23 16:34:40 UTC
+Last updated 2017-01-09 10:33:50 UTC
 </div>
 </div>
 </body>

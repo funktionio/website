@@ -516,11 +516,10 @@ table.CodeRay td.code>pre{padding:0}
 <ul class="sectlevel1">
 <li><a href="#terminology">Terminology</a>
 <ul class="sectlevel2">
-<li><a href="#connector">Connector</a></li>
-<li><a href="#flow">Flow</a></li>
-<li><a href="#subscription">Subscription</a></li>
 <li><a href="#function">Function</a></li>
 <li><a href="#runtime">Runtime</a></li>
+<li><a href="#connector">Connector</a></li>
+<li><a href="#flow">Flow</a></li>
 <li><a href="#funktion-operator">Funktion Operator</a></li>
 </ul>
 </li>
@@ -535,12 +534,27 @@ table.CodeRay td.code>pre{padding:0}
 <p>This section defines all the terms used in the <code>funktion</code> project</p>
 </div>
 <div class="sect2">
+<h3 id="function">Function</h3>
+<div class="paragraph">
+<p>A <code>function</code> is some source code to implement a function in some programming language like JavaScript, python or ruby.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="runtime">Runtime</h3>
+<div class="paragraph">
+<p>A <code>runtime</code> represents the kubernetes <code>Deployment</code> metadata required to take a function source in some programming language and implement it as one or more pods.</p>
+</div>
+<div class="paragraph">
+<p>The <code>funktion operator</code> then detects a new <code>function</code> resource being created or updated and creates the associated <code>runtime</code> deployment</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="connector">Connector</h3>
 <div class="paragraph">
 <p>A <code>connector</code> represents a way to connect to some event source, including most network protocols, transports, databases, messaging systems, social networks, cloud services and SaaS offerings. Funktion supports <a href="http://camel.apache.org/components.html">over 200 event sources</a>.</p>
 </div>
 <div class="paragraph">
-<p>At the implementation level a <code>connector</code> represents the kubernetes <code>deployment</code> metadata required to take the <code>flow</code> and implement it as one or more kubernetes <code>pods</code>.</p>
+<p>At the implementation level a <code>Connector</code> represents the kubernetes <code>Deployment</code> metadata required to take the <code>Flow</code> and implement it as one or more kubernetes <code>pods</code>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -548,14 +562,8 @@ table.CodeRay td.code>pre{padding:0}
 <div class="paragraph">
 <p>A <code>flow</code> is a sequence of <code>steps</code> such as consuming events from an <code>endpoint</code> or invoking a <code>function</code>.</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="subscription">Subscription</h3>
 <div class="paragraph">
-<p>A subscription consists of one or more <code>flows</code> which bind events to HTTP endpoints and functions.</p>
-</div>
-<div class="paragraph">
-<p>For example here is a sample subscription with a single flow:</p>
+<p>For example here is a sample flow in YAML format.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -568,28 +576,16 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="paragraph">
-<p>Creating a <code>subscription</code> results in the <code>funktion operator</code> creating an associated <code>deployment</code> which implements the flows.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="function">Function</h3>
-<div class="paragraph">
-<p>A <code>function</code> is some source code to implement a function in some programming language like JavaScript, python or ruby.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="runtime">Runtime</h3>
-<div class="paragraph">
-<p>A <code>runtime</code> represents the kubernetes <code>deployment</code> metadata required to take a function source in some programming language and implement it as one or more pods.</p>
+<p>Note that a Flow resource can contain multiple sequential flows. Each flow object in the YAML is a sequence of steps.</p>
 </div>
 <div class="paragraph">
-<p>The <code>funktion operator</code> then detects a new <code>function</code> resource being created or updated and creates the associated <code>runtime</code> deployment</p>
+<p>Creating a <code>flow</code> results in the <code>funktion operator</code> creating an associated <code>Deployment</code> which implements the flows.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="funktion-operator">Funktion Operator</h3>
 <div class="paragraph">
-<p>The <code>funktion operator</code> is a runnning <code>pod</code> in kubernetes which monitors for all the funktion resources like <code>function</code>, <code>runtime</code>, <code>connector</code> and <code>subscription</code> and creates, updates or deletes the associated kubernetes <code>deployments</code> and <code>services</code> so that as you create a <code>subscription</code> or <code>function</code> the associated kubenretes resources are created.</p>
+<p>The <code>funktion operator</code> is a runnning <code>pod</code> in kubernetes which monitors for all the funktion resources like <code>function</code>, <code>runtime</code>, <code>connector</code> and <code>flow</code> and creates, updates or deletes the associated kubernetes <code>deployments</code> and <code>services</code> so that as you create a <code>flow</code> or <code>function</code> the associated kubenretes resources are created.</p>
 </div>
 </div>
 </div>
@@ -597,7 +593,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-23 16:34:40 UTC
+Last updated 2017-01-09 10:33:50 UTC
 </div>
 </div>
 </body>

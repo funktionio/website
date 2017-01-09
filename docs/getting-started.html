@@ -551,13 +551,24 @@ funktion install connector http4 timer twitter</code></pre>
 <div class="sect1">
 <h2 id="create-a-function">Create a function</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>You can create a function from an existing source file:</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>funktion create fn -f example/hello.js</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This should have created a new <code>function</code>. You can view it via</p>
+<p>Or you can specify the source code on the command line:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion create fn -n hello -s 'module.exports = function(context, callback) { callback(200, "Hello, world!\n"); }'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Either of these will create a new function. You can view it via</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -565,7 +576,7 @@ funktion install connector http4 timer twitter</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If you wish to keep editing the source code of the function in your IDE and have funktion automatically update the running function use the <code>-w</code> argument to watch the source file(s):</p>
+<p>If you wish to keep editing the source code of the function in your editor and have funktion automatically update the running function use the <code>-w</code> argument to watch the source file(s):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -573,7 +584,15 @@ funktion install connector http4 timer twitter</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>To be able to find the URL of the function type:</p>
+<p>If you have a folder with multiple function source files inside you can pass the directory name or a wildcard pattern:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion create fn -f example -w</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To be able to find the URL of the running function type:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -652,7 +671,7 @@ funktion install connector http4 timer twitter</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-01-09 10:33:50 UTC
+Last updated 2017-01-09 10:51:09 UTC
 </div>
 </div>
 </body>

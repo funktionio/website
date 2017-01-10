@@ -518,8 +518,9 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#introduction">1. Introduction</a></li>
 <li><a href="#install">2. Installing Funktion</a>
 <ul class="sectlevel2">
-<li><a href="#install-platform">2.1. Installing the Funktion Platform</a></li>
-<li><a href="#setup-namespace">2.2. Setting up your namespace</a></li>
+<li><a href="#install-binary">2.1. Install the funktion binary</a></li>
+<li><a href="#install-platform">2.2. Installing the Funktion Platform</a></li>
+<li><a href="#setup-namespace">2.3. Setting up your namespace</a></li>
 </ul>
 </li>
 <li><a href="#get-started">3. Getting Started</a>
@@ -538,6 +539,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#creating-flows">4.5. Creating flows</a></li>
 <li><a href="#using-kubectl-directly">4.6. Using kubectl directly</a></li>
 <li><a href="#running-the-operator">4.7. Running the Operator</a></li>
+<li><a href="#updating-the-binary">4.8. Updating the binary</a></li>
 </ul>
 </li>
 <li><a href="#funktion-java">5. Using funktion on the JVM</a>
@@ -599,9 +601,6 @@ table.CodeRay td.code>pre{padding:0}
 <p>If you are on your laptop a quick way to get a kubernetes cluster is by <a href="https://github.com/kubernetes/minikube#installation">installing and starting minikube</a> and then <a href="http://kubernetes.io/docs/user-guide/prereqs/">installing kubectl</a> and putting it on your <code>PATH</code> environment variable.</p>
 </div>
 <div class="paragraph">
-<p>You will also need to <a href="https://github.com/funktionio/funktion/releases">download the funktion binary for your platform</a> and add it to your <code>PATH</code> environment variable</p>
-</div>
-<div class="paragraph">
 <p>To test your kubernetes cluster type the following commands which should succeed without error:</p>
 </div>
 <div class="listingblock">
@@ -611,7 +610,29 @@ kubectl get pod</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="install-platform">2.1. Installing the Funktion Platform</h3>
+<h3 id="install-binary">2.1. Install the funktion binary</h3>
+<div class="paragraph">
+<p>You will also need to <a href="https://github.com/funktionio/funktion/releases">download the funktion binary for your platform</a> and add it to your <code>PATH</code> environment variable.</p>
+</div>
+<div class="paragraph">
+<p>You can test its installed by typing the following in a command shell</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The funktion binary is self updating so you can upgrade your binary to newer versions if they are available via the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion update</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="install-platform">2.2. Installing the Funktion Platform</h3>
 <div class="paragraph">
 <p>There are a number of microservices required to run funktion:</p>
 </div>
@@ -654,7 +675,7 @@ funktion install platform --namespace cheese</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="using-funktion-with-the-fabric8-developer-platform">2.1.1. Using Funktion with the Fabric8 Developer Platform</h4>
+<h4 id="using-funktion-with-the-fabric8-developer-platform">2.2.1. Using Funktion with the Fabric8 Developer Platform</h4>
 <div class="paragraph">
 <p>If you are using the <a href="https://fabric8.io/">fabric8 developer platform</a> then the <a href="https://github.com/fabric8io/exposecontroller/">exposecontroller</a> and  <a href="https://github.com/fabric8io/configmapcontroller/">configmapcontroller</a> microservices will already be installed. So you don&#8217;t need to install them again.</p>
 </div>
@@ -672,7 +693,7 @@ funktion install platform --namespace cheese</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="setup-namespace">2.2. Setting up your namespace</h3>
+<h3 id="setup-namespace">2.3. Setting up your namespace</h3>
 <div class="paragraph">
 <p>Once you have the platform installed you need to install the runtimes and connectors in the namespace you are going to use funktion.</p>
 </div>
@@ -1030,6 +1051,17 @@ funktion install connector --all</code></pre>
 <p>Though ideally you&#8217;d install the funktion operator by <a href="#install-platform">Installing the Funktion Platform</a></p>
 </div>
 </div>
+<div class="sect3">
+<h4 id="updating-the-binary">4.8. Updating the binary</h4>
+<div class="paragraph">
+<p>The funktion binary is self updating so you can upgrade your binary to newer versions if they are available via the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion update</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1328,7 +1360,7 @@ funktion install connector --all</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 3.1.32<br>
-Last updated 2017-01-09 10:51:09 UTC
+Last updated 2017-01-10 09:35:59 UTC
 </div>
 </div>
 </body>

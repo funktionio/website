@@ -515,6 +515,7 @@ table.CodeRay td.code>pre{padding:0}
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
+<li><a href="#install-binary">Install the funktion binary</a></li>
 <li><a href="#install-platform">Installing the Funktion Platform</a>
 <ul class="sectlevel2">
 <li><a href="#using-funktion-with-the-fabric8-developer-platform">Using Funktion with the Fabric8 Developer Platform</a></li>
@@ -534,15 +535,36 @@ table.CodeRay td.code>pre{padding:0}
 <p>If you are on your laptop a quick way to get a kubernetes cluster is by <a href="https://github.com/kubernetes/minikube#installation">installing and starting minikube</a> and then <a href="http://kubernetes.io/docs/user-guide/prereqs/">installing kubectl</a> and putting it on your <code>PATH</code> environment variable.</p>
 </div>
 <div class="paragraph">
-<p>You will also need to <a href="https://github.com/funktionio/funktion/releases">download the funktion binary for your platform</a> and add it to your <code>PATH</code> environment variable</p>
-</div>
-<div class="paragraph">
 <p>To test your kubernetes cluster type the following commands which should succeed without error:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>kubectl get node
 kubectl get pod</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="install-binary">Install the funktion binary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You will also need to <a href="https://github.com/funktionio/funktion/releases">download the funktion binary for your platform</a> and add it to your <code>PATH</code> environment variable.</p>
+</div>
+<div class="paragraph">
+<p>You can test its installed by typing the following in a command shell</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The funktion binary is self updating so you can upgrade your binary to newer versions if they are available via the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion update</code></pre>
 </div>
 </div>
 </div>
@@ -652,7 +674,7 @@ funktion install connector timer twitter</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-01-09 10:51:09 UTC
+Last updated 2017-01-10 09:35:59 UTC
 </div>
 </div>
 </body>

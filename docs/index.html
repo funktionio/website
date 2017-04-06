@@ -1076,7 +1076,7 @@ funktion install connector --all</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>write a simple function in any programming language <a href="https://github.com/fabric8io/funktion/blob/master/funktion-runtime/src/test/java/io/fabric8/funktion/sample/Main.java#L25-L27">like this</a>.</p>
+<p>write a simple function in any programming language <a href="https://github.com/funktionio/funktion-connectors/blob/master/funktion-runtime/src/test/java/io/fabric8/funktion/sample/Main.java#L25-L27">like this</a>.</p>
 </li>
 <li>
 <p>create a <a href="funktion-runtime/funktion.yml">funktion.yml</a> file and associate your function with an <a href="http://camel.apache.org/components.html">event trigger endpoint URL</a> such as a HTTP URL or email address to listen on, a message queue name or database table etc.</p>
@@ -1148,7 +1148,7 @@ funktion install connector --all</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="https://raw.githubusercontent.com/fabric8io/funktion/master/docs/images/select-microservice.png" alt="select the funktion microservice and enter a name for your project"></span></p>
+<p><span class="image"><img src="https://raw.githubusercontent.com/funktionio/funktion-connectors/master/docs/images/select-microservice.png" alt="select the funktion microservice and enter a name for your project"></span></p>
 </div>
 <div class="ulist">
 <ul>
@@ -1164,7 +1164,7 @@ funktion install connector --all</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="https://raw.githubusercontent.com/fabric8io/funktion/master/docs/images/select-pipeline.png" alt="select the CD Pipeline"></span></p>
+<p><span class="image"><img src="https://raw.githubusercontent.com/funktionio/funktion-connectors/master/docs/images/select-pipeline.png" alt="select the CD Pipeline"></span></p>
 </div>
 <div class="ulist">
 <ul>
@@ -1183,7 +1183,7 @@ funktion install connector --all</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="https://raw.githubusercontent.com/fabric8io/funktion/master/docs/images/funktion-dashboard.png" alt="Funktion dashboard"></span></p>
+<p><span class="image"><img src="https://raw.githubusercontent.com/funktionio/funktion-connectors/master/docs/images/funktion-dashboard.png" alt="Funktion dashboard"></span></p>
 </div>
 </div>
 <div class="sect3">
@@ -1228,7 +1228,7 @@ funktion install connector --all</code></pre>
 <p>A <code>flow</code> is modelled as a Kubernetes <code>ConfigMap</code> with the label <code>kind.funktion.fabric8.io: &quot;Flow&quot;</code>. A ConfigMap is used so that the entries inside the <code>ConfigMap</code> can be mounted as files inside the <code>Deployment</code>. For example this will typically involve storing the <code>funktion.yml</code> file or maybe a Spring Boot <code>application.properties</code> file inside the <code>ConfigMap</code> like <a href="examples/flow1.yml">this example flow</a></p>
 </div>
 <div class="paragraph">
-<p>A <code>Connector</code> is generated <a href="https://github.com/fabric8io/funktion/blob/master/connectors/">for every Camel Component</a> and each connector has an associated <code>ConfigMap</code> resource like <a href="https://github.com/fabric8io/funktion/blob/master/connectors/connector-timer/src/main/fabric8/timer-cm.yml">this example</a> which uses the label <code>kind.funktion.fabric8.io: &quot;Connector&quot;</code>. The <code>Connector</code> stores the <code>Deployment</code> metadata, the <code>schema.yml</code> for editing the connectors endpoint URL and the <code>documentation.adoc</code> documentation for using the Connector.</p>
+<p>A <code>Connector</code> is generated <a href="https://github.com/funktionio/funktion-connectors/blob/master/connectors/">for every Camel Component</a> and each connector has an associated <code>ConfigMap</code> resource like <a href="https://github.com/funktionio/funktion-connectors/blob/master/connectors/connector-timer/src/main/fabric8/timer-cm.yml">this example</a> which uses the label <code>kind.funktion.fabric8.io: &quot;Connector&quot;</code>. The <code>Connector</code> stores the <code>Deployment</code> metadata, the <code>schema.yml</code> for editing the connectors endpoint URL and the <code>documentation.adoc</code> documentation for using the Connector.</p>
 </div>
 <div class="paragraph">
 <p>So a <code>Connector</code> can have <code>0..N flows</code> associated with it. For those who know <a href="http://camel.apache.org/">Apache Camel</a> this is like the relationship between a <code>Component</code> having <code>0..N Endpoints</code>.</p>
@@ -1360,7 +1360,7 @@ funktion install connector --all</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 3.1.32<br>
-Last updated 2017-01-10 09:35:59 UTC
+Last updated 2017-04-06 11:28:46 UTC
 </div>
 </div>
 </body>

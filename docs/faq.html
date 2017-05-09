@@ -521,6 +521,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#how-do-i-get-started">How do I get started?</a></li>
 <li><a href="#how-do-i-install-funktion">How do I install funktion?</a></li>
 <li><a href="#what-is-serverless">What is serverless?</a></li>
+<li><a href="#how-does-funktion-compare-to-other-serverless-frameworks">How does Funktion compare to other serverless frameworks?</a></li>
 </ul>
 </li>
 </ul>
@@ -564,12 +565,40 @@ table.CodeRay td.code>pre{padding:0}
 <p>Its not that there are no servers - of course there are - its just that developers don&#8217;t need to think about them at all, they are managed for you by the platform.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="how-does-funktion-compare-to-other-serverless-frameworks">How does Funktion compare to other serverless frameworks?</h3>
+<div class="paragraph">
+<p>There are many frameworks out there for serverless. From 30,000 feet they are all quite similar.</p>
+</div>
+<div class="paragraph">
+<p>Here are the main differences of Funktion:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Funktion focusses on being Kubernetes and OpenShift native rather than some generic serverless frameworks (like Open Whisk). So Funktion is designed to reuse Kubernetes abstractions like Deployments, Service, Ingress/Route, auto scaling along with mounting ConfigMaps into pods to quickly update pods when the source of functions change to provide rapid developer feedback.</p>
+</li>
+<li>
+<p>Event triggering from over 200 different connectors spanning most middleware technologies, databases, messaging systems, APIs, social media networks and cloud services via deep integration with <a href="http://camel.apache.org/components.html">Apache Camel</a>.</p>
+</li>
+<li>
+<p>Funktion can trigger any functions and HTTP endpoints from other frameworks and technologies via different trigger technologies than HTTP. Quite a few serverless frameworks, particularly kubernetes specific ones, focus on just exposing a function in some language over HTTP. We see that as important; but only part of the picture.</p>
+</li>
+<li>
+<p>Funktion supports a <a href="https://funktion.fabric8.io/docs/#create-a-flow">flow language</a> to orchestrate flows between many functions and endpoints to make composite flows. Similar to AWS Step Functions in concept though it delegates to the endpoint technology for persistence, retries and transactions etc.</p>
+</li>
+<li>
+<p>We are working on deep integration into the <a href="https://openshift.io/">openshift.io</a> open source developer platform for kubernetes/openshift to support rich development, debugging and CI / CD capabilities along with integration into Eclipse Che. Also we&#8217;re working on a rich web UI for visually triggering functions from a variety of connectors and building flows across functions such as in <a href="https://youtu.be/PtTnnw3DakY?list=PLEGSLwUsxfEh4TE2GDU4oygCB-tmShkSn&amp;t=3112">this video</a>.</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-04-06 11:28:46 UTC
+Last updated 2017-05-09 17:00:29 UTC
 </div>
 </div>
 </body>

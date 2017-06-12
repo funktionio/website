@@ -520,7 +520,7 @@ table.CodeRay td.code>pre{padding:0}
 <ul class="sectlevel2">
 <li><a href="#install-binary">2.1. Install the funktion binary</a></li>
 <li><a href="#install-platform">2.2. Installing the Funktion Platform</a></li>
-<li><a href="#setup-namespace">2.3. Setting up your namespace</a></li>
+<li><a href="#add-flow-connectors">2.3. Add flow connectors</a></li>
 </ul>
 </li>
 <li><a href="#get-started">3. Getting Started</a>
@@ -635,23 +635,7 @@ kubectl get pod</code></pre>
 <div class="sect2">
 <h3 id="install-platform">2.2. Installing the Funktion Platform</h3>
 <div class="paragraph">
-<p>There are a number of microservices required to run funktion:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>funktion operator: manages Deployments for functions and flows</p>
-</li>
-<li>
-<p><a href="https://github.com/fabric8io/exposecontroller/">exposecontroller</a>: exposes <code>Services</code> (functions or flows) over node ports, ingress, public cloud load balancers or openshift routes</p>
-</li>
-<li>
-<p><a href="https://github.com/fabric8io/configmapcontroller/">configmapcontroller</a>: performs rolling updates of a <code>Deployment</code> when its associated <code>ConfigMap</code> changes</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>To install these microservices type:</p>
+<p>To install the funktion platform into your current kubernetes namespace:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -659,20 +643,11 @@ kubectl get pod</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>You will then get 3 <code>Deployment</code> resources created in the <code>funktion-system</code> namespace. You can view the pods created via:</p>
+<p>You can watch the funktion operator pod start via:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>kubectl get pod -n funktion-system</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can change the namespace they are installed into via the <code>--namespace</code> argument:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>kubectl create namespace cheese
-funktion install platform --namespace cheese</code></pre>
+<pre class="CodeRay highlight"><code>kubectl get pod -w</code></pre>
 </div>
 </div>
 <div class="sect3">
@@ -688,27 +663,20 @@ funktion install platform --namespace cheese</code></pre>
 <pre class="CodeRay highlight"><code>funktion install operator</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>The funktion operator <code>Deployment</code> will created in the <code>funktion-system</code> namespace. You can change the namespace they are installed into via the <code>--namespace</code> argument.</p>
-</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="setup-namespace">2.3. Setting up your namespace</h3>
+<h3 id="add-flow-connectors">2.3. Add flow connectors</h3>
 <div class="paragraph">
-<p>Once you have the platform installed you need to install the runtimes and connectors in the namespace you are going to use funktion.</p>
-</div>
-<div class="paragraph">
-<p>For example to install the default runtimes and some connectors type:</p>
+<p>Once you have the platform installed you may wish to install some connectors. For example to install the timer and twitter connectors try:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion install runtime
-funktion install connector timer twitter</code></pre>
+<pre class="CodeRay highlight"><code>funktion install connector timer twitter</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>That will install the default runtimes (e.g. nodejs) along with the <code>timer</code> and <code>twitter</code> connectors so that you can use them inside flows.</p>
+<p>That will install <code>timer</code> and <code>twitter</code> connectors so that you can use them inside flows.</p>
 </div>
 <div class="paragraph">
 <p>To see a list of all the connectors available type:</p>
@@ -745,22 +713,39 @@ kubectl config set-context `kubectl config current-context` --namespace=funky</c
 </div>
 </div>
 <div class="paragraph">
-<p>Now we&#8217;ll install the runtimes and a couple of connectors into the <code>funky</code> namespace</p>
+<p>Now we&#8217;ll install the runtime platform (the controller and the nodejs runtime) and a couple of connectors into the <code>funky</code> namespace</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion install runtime
+<pre class="CodeRay highlight"><code>funktion install platform
 funktion install connector http4 timer twitter</code></pre>
 </div>
 </div>
 <div class="sect2">
 <h3 id="create-a-function">3.1. Create a function</h3>
 <div class="paragraph">
-<p>You can create a function from an existing source file:</p>
+<p>You can create a function from an existing source file. e.g. lets clone an example project:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion create fn -f example/hello.js</code></pre>
+<pre class="CodeRay highlight"><code>git clone https://github.com/funktionio/funktion-nodejs-quickstart.git
+cd funktion-nodejs-quickstart</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we can create a function from a source file as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion create fn -f src/hello.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Use <code>apply</code> instead of <code>create</code> so that you can insert or update resources. You can also omit the resource kind <code>fn</code> or <code>flow</code> and it&#8217;ll figure out the right kind:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion apply -f src/hello.js</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -772,7 +757,7 @@ funktion install connector http4 timer twitter</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Either of these will create a new function. You can view it via</p>
+<p>Any of the above options will create a function resource. You can view it via</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -784,7 +769,7 @@ funktion install connector http4 timer twitter</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion create fn -f example/hello.js -w</code></pre>
+<pre class="CodeRay highlight"><code>funktion apply -f src/hello.js -w</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -792,11 +777,19 @@ funktion install connector http4 timer twitter</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion create fn -f example -w</code></pre>
+<pre class="CodeRay highlight"><code>funktion apply fn -f src -w</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>To be able to find the URL of the running function type:</p>
+<p>To be able to find the URL of the running function you can type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion get fn</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or to script it this command is useful:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1392,7 +1385,7 @@ funktion install connector --all</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 3.1.32<br>
-Last updated 2017-05-09 17:36:48 UTC
+Last updated 2017-06-12 13:29:49 UTC
 </div>
 </div>
 </body>

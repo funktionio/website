@@ -538,11 +538,11 @@ kubectl config set-context `kubectl config current-context` --namespace=funky</c
 </div>
 </div>
 <div class="paragraph">
-<p>Now we&#8217;ll install the runtimes and a couple of connectors into the <code>funky</code> namespace</p>
+<p>Now we&#8217;ll install the runtime platform (the controller and the nodejs runtime) and a couple of connectors into the <code>funky</code> namespace</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion install runtime
+<pre class="CodeRay highlight"><code>funktion install platform
 funktion install connector http4 timer twitter</code></pre>
 </div>
 </div>
@@ -552,11 +552,28 @@ funktion install connector http4 timer twitter</code></pre>
 <h2 id="create-a-function">Create a function</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You can create a function from an existing source file:</p>
+<p>You can create a function from an existing source file. e.g. lets clone an example project:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion create fn -f example/hello.js</code></pre>
+<pre class="CodeRay highlight"><code>git clone https://github.com/funktionio/funktion-nodejs-quickstart.git
+cd funktion-nodejs-quickstart</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we can create a function from a source file as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion create fn -f src/hello.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Use <code>apply</code> instead of <code>create</code> so that you can insert or update resources. You can also omit the resource kind <code>fn</code> or <code>flow</code> and it&#8217;ll figure out the right kind:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion apply -f src/hello.js</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -568,7 +585,7 @@ funktion install connector http4 timer twitter</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Either of these will create a new function. You can view it via</p>
+<p>Any of the above options will create a function resource. You can view it via</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -580,7 +597,7 @@ funktion install connector http4 timer twitter</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion create fn -f example/hello.js -w</code></pre>
+<pre class="CodeRay highlight"><code>funktion apply -f src/hello.js -w</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -588,11 +605,19 @@ funktion install connector http4 timer twitter</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion create fn -f example -w</code></pre>
+<pre class="CodeRay highlight"><code>funktion apply fn -f src -w</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>To be able to find the URL of the running function type:</p>
+<p>To be able to find the URL of the running function you can type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>funktion get fn</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or to script it this command is useful:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -671,7 +696,7 @@ funktion install connector http4 timer twitter</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-05-09 17:36:48 UTC
+Last updated 2017-06-12 13:29:49 UTC
 </div>
 </div>
 </body>

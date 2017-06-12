@@ -521,7 +521,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#using-funktion-with-the-fabric8-developer-platform">Using Funktion with the Fabric8 Developer Platform</a></li>
 </ul>
 </li>
-<li><a href="#setup-namespace">Setting up your namespace</a></li>
+<li><a href="#add-flow-connectors">Add flow connectors</a></li>
 </ul>
 </div>
 </div>
@@ -573,23 +573,7 @@ kubectl get pod</code></pre>
 <h2 id="install-platform">Installing the Funktion Platform</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>There are a number of microservices required to run funktion:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>funktion operator: manages Deployments for functions and flows</p>
-</li>
-<li>
-<p><a href="https://github.com/fabric8io/exposecontroller/">exposecontroller</a>: exposes <code>Services</code> (functions or flows) over node ports, ingress, public cloud load balancers or openshift routes</p>
-</li>
-<li>
-<p><a href="https://github.com/fabric8io/configmapcontroller/">configmapcontroller</a>: performs rolling updates of a <code>Deployment</code> when its associated <code>ConfigMap</code> changes</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>To install these microservices type:</p>
+<p>To install the funktion platform into your current kubernetes namespace:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -597,20 +581,11 @@ kubectl get pod</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>You will then get 3 <code>Deployment</code> resources created in the <code>funktion-system</code> namespace. You can view the pods created via:</p>
+<p>You can watch the funktion operator pod start via:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>kubectl get pod -n funktion-system</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can change the namespace they are installed into via the <code>--namespace</code> argument:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>kubectl create namespace cheese
-funktion install platform --namespace cheese</code></pre>
+<pre class="CodeRay highlight"><code>kubectl get pod -w</code></pre>
 </div>
 </div>
 <div class="sect2">
@@ -626,29 +601,22 @@ funktion install platform --namespace cheese</code></pre>
 <pre class="CodeRay highlight"><code>funktion install operator</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>The funktion operator <code>Deployment</code> will created in the <code>funktion-system</code> namespace. You can change the namespace they are installed into via the <code>--namespace</code> argument.</p>
-</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="setup-namespace">Setting up your namespace</h2>
+<h2 id="add-flow-connectors">Add flow connectors</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Once you have the platform installed you need to install the runtimes and connectors in the namespace you are going to use funktion.</p>
-</div>
-<div class="paragraph">
-<p>For example to install the default runtimes and some connectors type:</p>
+<p>Once you have the platform installed you may wish to install some connectors. For example to install the timer and twitter connectors try:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>funktion install runtime
-funktion install connector timer twitter</code></pre>
+<pre class="CodeRay highlight"><code>funktion install connector timer twitter</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>That will install the default runtimes (e.g. nodejs) along with the <code>timer</code> and <code>twitter</code> connectors so that you can use them inside flows.</p>
+<p>That will install <code>timer</code> and <code>twitter</code> connectors so that you can use them inside flows.</p>
 </div>
 <div class="paragraph">
 <p>To see a list of all the connectors available type:</p>
@@ -674,7 +642,7 @@ funktion install connector timer twitter</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-05-09 17:36:48 UTC
+Last updated 2017-06-12 13:29:49 UTC
 </div>
 </div>
 </body>

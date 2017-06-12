@@ -95,14 +95,13 @@
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <p>lets install the platform, runtimes and a connector:</p>
+                    <p>lets install the platform and a connector:</p>
                 </div>
             </div>
             <div class="row">
                 <pre>
                     <code>
 <span><var>$</var> funktion install platform</span>
-<span><var>$</var> funktion install runtime</span>
 <span><var>$</var> funktion install connector timer</span>
                     </code>
                 </pre>
@@ -122,13 +121,13 @@
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <p>if we have some javascript files <a href="https://github.com/funktionio/funktion/blob/master/examples/hello.js">like this example</a> in a local folder <i>foo</i> we can watch those and then just edit them in our editor:</p>
+                    <p>if we have some javascript files <a href="https://github.com/funktionio/funktion-nodejs-quickstart/blob/master/src/">in a folder called src</a> called <i>src</i> we can apply them and watch the files via the <i>-w</i> flag. Then we can just edit the source files directly and the function runtime will update dyanmically:</p>
                 </div>
             </div>
             <div class="row">
                 <pre>
                     <code>
-<span><var>$</var> funktion create fn -f foo
+<span><var>$</var> funktion apply -f src -w
                     </code>
                 </pre>
             </div>
